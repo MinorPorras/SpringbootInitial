@@ -1,0 +1,17 @@
+### Probar que la app está viva
+GET http://localhost:8080/
+
+### Probar el POST
+POST http://localhost:8080/api/v1/software-engineers
+Content-Type: application/json
+
+{
+  "name": "Josue",
+  "techStack": "Spring Boot, Java"
+}
+
+###
+GET http://localhost:8080/api/v1/software-engineers
+
+###
+GET http://localhost:8080/api/v1/software-engineers/2
