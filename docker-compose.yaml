@@ -1,7 +1,4 @@
 services:
-  # ==========================================
-  # SERVICIO 1: BASE DE DATOS (PostgreSQL)
-  # ==========================================
   db:
     image: postgres:16-alpine
     container_name: postgres_db
@@ -15,14 +12,13 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U minor_user -d minor_db"]
+      test: ["CMD-SHELL", "pg_isready -U minor_user -d softengi_db"]
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - app_network
 
-  # ==========================================
-  # SERVICIO 2: APLICACIÓN SPRING BOOT
-  # ==========================================
   app:
     build:
       context: .
@@ -32,10 +28,10 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/minor_db
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/softengi_db
       SPRING_DATASOURCE_USERNAME: minor_user
       SPRING_DATASOURCE_PASSWORD: minor_password
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update # Cambiar a 'validate' o 'none' en producción real
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
     depends_on:
       db:
         condition: service_healthy
